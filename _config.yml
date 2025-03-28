@@ -1,8 +1,8 @@
 # Site settings
-title: Koop
-email: rgwozdz@esri.com
+title: Docs
+email: sample@sample.com
 description: >
-  Koop - an open source geospatial ETL engine
+  DOCS - POC
 
 baseurl: "" # the subpath of your site, e.g. /blog/
 url: https://sample-docs.github.io # the base hostname & protocol for your site
