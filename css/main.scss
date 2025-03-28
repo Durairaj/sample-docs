@@ -256,3 +256,278 @@ figcaption {
 #esri-logo {
   max-width: 300px;
 }
+
+/* Container styling */
+.panel-group {
+  max-width: 800px; /* Confluence-like constrained width */
+  margin: 0 auto;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; /* Modern sans-serif */
+}
+
+/* Panel styling */
+.panel.panel-default {
+  border: 1px solid #dfe1e6; /* Subtle gray border */
+  border-radius: 3px;
+  margin-bottom: 8px;
+  background-color: #ffffff;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05); /* Light shadow */
+}
+
+/* Panel heading */
+.panel-heading {
+  padding: 10px 15px;
+  background-color: #f4f5f7; /* Light gray like Confluence headers */
+  border-bottom: 1px solid #dfe1e6;
+  cursor: pointer; /* Indicates clickability */
+}
+
+.panel-title {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600; /* Slightly bold */
+  color: #172b4d; /* Dark blue-gray */
+}
+
+.panel-title a {
+  text-decoration: none;
+  color: #172b4d;
+  display: block;
+}
+
+.panel-title a:hover {
+  color: #0052cc; /* Confluence blue on hover */
+}
+
+/* Collapsible content */
+.panel-collapse {
+  padding: 0;
+}
+
+/* List group (main items) */
+.list-group {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.list-group-item {
+  padding: 10px 15px;
+  border-bottom: 1px solid #dfe1e6;
+}
+
+.list-group-item:last-child {
+  border-bottom: none;
+}
+
+.list-group-item a {
+  text-decoration: none;
+  color: #0052cc; /* Confluence blue for links */
+  font-size: 14px;
+}
+
+.list-group-item a:hover {
+  text-decoration: underline;
+}
+
+.list-group-item.active {
+  background-color: #ebecf0; /* Light gray for active */
+  font-weight: 600;
+}
+
+/* Remove extra div padding inside list-group-item */
+.list-group-item > a > div {
+  margin: 0;
+}
+
+/* Submenu styling */
+.sublist-group {
+  list-style: none;
+  padding-left: 25px; /* Indentation for hierarchy */
+  margin: 5px 0 0 0; /* Slight top margin */
+}
+
+.sublist-group a {
+  text-decoration: none;
+  color: #006644; /* Distinct color for subitems */
+  font-size: 13px;
+  display: block; /* Ensures full clickable area */
+}
+
+.sublist-group a:hover {
+  text-decoration: underline;
+  color: #0052cc; /* Hover matches main link color */
+}
+
+.sublist-group .list-sub-group-item {
+  padding: 6px 0; /* Vertical spacing */
+}
+
+.sublist-group .list-sub-group-item.active {
+  background-color: #f4f5f7; /* Light background for active subitem */
+  font-weight: 600;
+}
+
+/* Fix nested li styling */
+.sublist-group li {
+  margin: 0;
+  padding: 0;
+}
+
+.sublist-group span {
+  display: inline; /* Keeps text inline */
+}
+
+/* Collapse transition (Bootstrap-compatible) */
+.collapse {
+  display: none;
+}
+
+.collapse.in {
+  display: block;
+}
+
+/* Navbar container */
+.navbar.navbar-default.navbar-fixed-top {
+  background-color: #ffffff; /* White background like Confluence */
+  border-bottom: 1px solid #dfe1e6; /* Subtle gray border */
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05); /* Light shadow */
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; /* Modern sans-serif */
+}
+
+/* Container inside navbar */
+.navbar-container {
+  max-width: 1200px; /* Confluence-like constrained width */
+  padding: 0 15px;
+}
+
+/* Navbar header */
+.navbar-header {
+  display: flex;
+  align-items: center;
+}
+
+/* Toggle button for mobile */
+.navbar-toggle {
+  border: 1px solid #dfe1e6; /* Subtle border */
+  background-color: #f4f5f7; /* Light gray */
+  margin: 8px 15px;
+}
+
+.navbar-toggle .icon-bar {
+  background-color: #172b4d; /* Dark blue-gray for bars */
+}
+
+.navbar-toggle:hover,
+.navbar-toggle:focus {
+  background-color: #ebecf0; /* Lighter gray on hover */
+}
+
+/* Brand styling */
+.navbar-brand {
+  color: #172b4d; /* Dark blue-gray */
+  font-size: 18px;
+  font-weight: 600;
+  padding: 15px;
+  text-decoration: none;
+}
+
+.navbar-brand:hover,
+.navbar-brand:focus {
+  color: #0052cc; /* Confluence blue on hover */
+}
+
+/* Navbar collapse content */
+.navbar-collapse {
+  padding: 0;
+}
+
+/* Navigation links */
+.nav.navbar-nav {
+  margin: 0;
+}
+
+.nav.navbar-nav > li > a {
+  color: #172b4d; /* Dark blue-gray */
+  font-size: 14px;
+  padding: 15px 20px;
+  text-decoration: none;
+}
+
+.nav.navbar-nav > li > a:hover,
+.nav.navbar-nav > li > a:focus {
+  color: #0052cc; /* Confluence blue on hover */
+  background-color: #f4f5f7; /* Light gray background */
+}
+
+.nav.navbar-nav > li.active > a {
+  color: #0052cc; /* Blue for active */
+  background-color: #ebecf0; /* Slightly darker gray */
+  font-weight: 600;
+}
+
+/* Navbar right section */
+.navbar-right {
+  margin-right: 15px;
+}
+
+/* Search form */
+.navbar-form {
+  margin: 8px 0;
+  padding: 0;
+}
+
+.form-group.has-feedback {
+  position: relative;
+}
+
+.form-control {
+  border: 1px solid #dfe1e6; /* Subtle border */
+  border-radius: 3px;
+  box-shadow: none; /* Remove Bootstrap shadow */
+  font-size: 13px;
+  padding: 6px 25px 6px 10px; /* Space for icon */
+  background-color: #fafbfc; /* Very light gray */
+  color: #172b4d;
+}
+
+.form-control:focus {
+  border-color: #0052cc; /* Blue outline on focus */
+  background-color: #ffffff;
+  outline: none;
+}
+
+.form-control::placeholder {
+  color: #6b778c; /* Light gray placeholder */
+}
+
+/* Search icon */
+.form-control-feedback {
+  color: #6b778c; /* Gray icon */
+  font-size: 14px;
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none; /* Prevents icon from blocking input */
+}
+
+/* Responsive adjustments */
+@media (max-width: 767px) {
+  .navbar-nav {
+    margin: 0;
+  }
+  .navbar-right {
+    margin: 0;
+    padding: 10px 15px;
+  }
+  .navbar-form {
+    margin: 0;
+    width: 100%;
+  }
+  .form-group.has-feedback {
+    width: 100%;
+  }
+  .form-control {
+    width: 100%;
+  }
+}

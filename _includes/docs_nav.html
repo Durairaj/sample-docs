@@ -17,7 +17,6 @@
             <a href="{{ item_url  | prepend: site.baseurl }}">
                 <div>{{ item.title}}</div>
             </a>
-            
             <ul class="sublist-group">
               {% for subitem in item.subdocs %}
               {% assign subitem_url = subitem.path | prepend:"/docs/" %}
@@ -25,7 +24,6 @@
                 <li>
                   <span>{{ subitem.title}}</span>
                 </li>
-                
               </a>
             {% endfor %}
             </ul>
