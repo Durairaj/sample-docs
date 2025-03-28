@@ -1,0 +1,33 @@
+
+- title:  Solution & Architecture
+  path: solution-architecture/intro
+  docs:
+  - title: Intro
+    path: solution-architecture/intro
+  - title: FAQs
+    path: solution-architecture/faqs
+
+
+- title: Data
+  path: data/intro
+  docs:
+  - title: Intro
+    path: data/intro
+
+
+- title: Analytics & AI
+  path: analytics-ai/intro
+  docs:
+  - title: Intro
+    path: analytics-ai/intro
+
+- title: Experience & Application Layer
+  path: experience-application
+  docs:
+  - title: Sub docs
+    path: experience-application/subdocs/doc1
+    subdocs:
+    - title: Sub doc 1
+      path: experience-application/subdocs/doc1
+    - title: Sub doc 2
+      path: experience-application/subdocs/doc2
