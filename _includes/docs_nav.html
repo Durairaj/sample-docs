@@ -1,36 +1,33 @@
-<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+<!-- Sidebar Container -->
+<div class="confluence-sidebar">
+  <button class="sidebar-toggle" aria-label="Toggle Sidebar"></button>
   {% for section in site.data.docs %}
-  {% assign section_url = section.path | prepend:"/docs/" %}
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <h4 class="panel-title">
-        <a role="button" data-toggle="collapse" data-parent="#accordion" data-target="#collapse-{{forloop.index}}" href="{{ section_url  | prepend: site.baseurl }}" aria-expanded="false" aria-controls="collapse-{{forloop.index}}">
-          {{ section.title }}
-        </a>
-      </h4>
-    </div>
-    <div id="collapse-{{forloop.index}}" class="panel-collapse" role="tabpanel" aria-labelledby="headingOne">
-      <ul class="list-group">
+    {% assign section_url = section.path | prepend:"/docs/" %}
+    <div class="sidebar-section">
+      <!-- Section Title (Collapsible Toggle) -->
+      <div class="sidebar-section-title" data-toggle="collapse" data-target="#section-{{forloop.index}}">
+        <a href="{{ section_url | prepend: site.baseurl }}">{{ section.title }}</a>
+        <span class="toggle-icon"></span>
+      </div>
+      <!-- Section Content (Collapsible) -->
+      <ul id="section-{{forloop.index}}" class="sidebar-section-content collapse in">
         {% for item in section.docs %}
           {% assign item_url = item.path | prepend:"/docs/" %}
-          <div class="list-group-item {% if page.url contains item_url %}active{% endif %}" >
-            <a href="{{ item_url  | prepend: site.baseurl }}">
-                <div>{{ item.title}}</div>
-            </a>
-            <ul class="sublist-group">
-              {% for subitem in item.subdocs %}
-              {% assign subitem_url = subitem.path | prepend:"/docs/" %}
-              <a class="list-sub-group-item {% if subitem_url == page.url %}active{% endif %}" href="{{ subitem_url  | prepend: site.baseurl }}">
-                <li>
-                  <span>{{ subitem.title}}</span>
-                </li>
-              </a>
-            {% endfor %}
-            </ul>
-          </div>
+          <li class="{% if page.url contains item_url %}active{% endif %}">
+            <a href="{{ item_url | prepend: site.baseurl }}">{{ item.title }}</a>
+            {% if item.subdocs %}
+              <ul class="sidebar-subsection">
+                {% for subitem in item.subdocs %}
+                  {% assign subitem_url = subitem.path | prepend:"/docs/" %}
+                  <li class="{% if subitem_url == page.url %}active{% endif %}">
+                    <a href="{{ subitem_url | prepend: site.baseurl }}">{{ subitem.title }}</a>
+                  </li>
+                {% endfor %}
+              </ul>
+            {% endif %}
+          </li>
         {% endfor %}
       </ul>
     </div>
-  </div>
-{% endfor %}
+  {% endfor %}
 </div>

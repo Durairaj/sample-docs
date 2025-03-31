@@ -1,75 +1,92 @@
 ---
-# Only the main Sass file needs front matter (the dashes are enough)
+# Only the main Sass file needs front matter
 ---
 @charset "utf-8";
 
-// Import partials from `sass_dir` (defaults to `_sass`)
+// Variables for reusability
+$primary-color: #172b4d;        // Dark blue-gray (Confluence text)
+$link-color: #0052cc;           // Confluence blue for links
+$accent-color: #008cba;         // Secondary accent
+$gray-lightest: #f4f5f7;        // Light gray background
+$gray-lighter: #ebecf0;         // Slightly darker gray
+$gray-light: #dfe1e6;           // Borders
+$gray-medium: #7d7d7d;          // Inactive text
+$gray-dark: #6b778c;            // Placeholders, icons
+$sidebar-width: 250px;          // Sidebar width
+$sidebar-collapsed-width: 20px; // Collapsed width
+$navbar-height: 56px;           // Confluence top nav height
+$transition-speed: 0.3s;        // Animation speed
 
-
-
+// Imports
 @import
   {% if site.bootwatch %}
     "bootswatch/{{site.bootwatch | downcase}}/variables",
   {% endif %}
-
   "bootstrap",
-
   {% if site.bootwatch %}
     "bootswatch/{{site.bootwatch | downcase}}/bootswatch",
   {% endif %}
-
   "syntax-highlighting",
   "typeahead"
 ;
 
+// Global styles
 html {
   position: relative;
   min-height: 100%;
 }
+
 body {
-  padding-top: $navbar-height + $navbar-margin-bottom;
+  padding-top: $navbar-height;
   margin-bottom: 46px;
   line-height: 1.7em;
+  padding-left: $sidebar-width;
+  transition: padding-left $transition-speed ease-in-out;
+
+  &.sidebar-collapsed {
+    padding-left: $sidebar-collapsed-width;
+  }
 }
 
-h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {
-  font-weight: 400;
-
+// Headings mixin for reusable anchor styles
+@mixin heading-anchor {
   .anchor {
     float: left;
     line-height: 1;
     margin-left: -20px;
     padding-right: 4px;
     opacity: 0;
-  }
-
-  .anchor:hover {
-    opacity: 1;
-  }
-
-  code {
-    background-color: transparent;
+    &:hover {
+      opacity: 1;
+    }
   }
 }
 
 h1 {
   margin-top: 0;
+  &:hover {
+    @include heading-anchor;
+  }
 }
 
-h2, .h2, h3, .h3 {
+h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {
+  font-weight: 400;
+  @include heading-anchor;
+
+  code {
+    background-color: transparent;
+  }
+
+  &:hover {
+    .anchor {
+      opacity: 1;
+    }
+  }
+}
+
+h2, .h3 {
   margin-top: 30px;
   margin-bottom: 20px;
-}
-
-table {
-  font-size: 16px;
-  margin-bottom: 45px;
-}
-
-h1:hover, .h1:hover, h2:hover, .h2:hover, h3:hover, .h3:hover, h4:hover, .h4:hover, h5:hover, .h5:hover, h6:hover, .h6:hover {
-  .anchor{
-    opacity: 1;
-  }
 }
 
 p {
@@ -80,64 +97,397 @@ p {
 code {
   padding: 2px 4px;
   font-size: 90%;
-  color: #008cba;
+  color: $accent-color;
   background-color: #f5f5f5;
   border-radius: 0;
 }
 
-.codeanchor {
-  .anchor {
-    float: left;
-    line-height: 1;
-    margin-left: -20px;
-    padding-right: 4px;
-    opacity: 0;
-  }
-
-  .anchor:hover {
-    opacity: 1;
-  }
-}
-
-figcaption {
-  margin-bottom: 20px;
-}
-
-.highlight {
-  margin-bottom: 20px;
-}
-
-.navbar-brand{
-  img{
-    margin: -$navbar-padding-vertical 0;
-    height: $navbar-height;
-    padding: 10px 0;
-  }
-}
-
-.navbar-default span.twitter-typeahead .tt-menu {
+// Top Navigation (Confluence Style, Simplified)
+.confluence-topnav {
   background-color: #fff;
-}
+  border-bottom: 1px solid $gray-light;
+  height: $navbar-height;
+  padding: 0;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 
-.header-container {
-
-  background-color: #383838;
-  color: #fff;
-
-  h1 {
-    color: #fff;
+  .navbar-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 15px;
   }
-  h3 {
-    color: #fff;
+
+  // Left Section
+  .navbar-left {
+    display: flex;
+    align-items: center;
+
+    .navbar-brand {
+      display: flex;
+      align-items: center;
+      padding: 0;
+      margin-right: 20px;
+
+      .navbar-logo {
+        height: 32px;
+        margin-right: 10px;
+      }
+
+      .navbar-title {
+        color: $primary-color;
+        font-size: 16px;
+        font-weight: 600;
+        text-decoration: none;
+      }
+
+      &:hover {
+        text-decoration: none;
+      }
+    }
+
+    .navbar-toggle {
+      margin: 0 10px 0 0;
+      border: none;
+      background-color: transparent;
+
+      .icon-bar {
+        background-color: $gray-dark;
+        width: 22px;
+        height: 2px;
+        display: block;
+        margin: 4px 0;
+      }
+
+      &:hover, &:focus {
+        background-color: $gray-lighter;
+      }
+    }
   }
-  margin-top: -37px;
+
+  // Navigation Links (Only Documentation)
+  .navbar-nav {
+    display: flex;
+    align-items: center;
+    margin: 0;
+
+    > li {
+      > a {
+        color: $gray-dark;
+        font-size: 14px;
+        padding: 10px 15px;
+        text-decoration: none;
+        transition: color $transition-speed ease-in-out;
+
+        &:hover {
+          color: $link-color;
+          background-color: $gray-lighter;
+          border-radius: 3px;
+        }
+      }
+
+      &.active > a {
+        color: $link-color;
+        font-weight: 600;
+        background-color: transparent;
+      }
+    }
+  }
+
+  // Right Section (Search Only)
+  .navbar-right {
+    display: flex;
+    align-items: center;
+
+    .navbar-search {
+      margin-right: 0;
+
+      .search-container {
+        position: relative;
+
+        .form-control {
+          width: 200px;
+          padding: 6px 30px 6px 12px;
+          font-size: 14px;
+          border: 1px solid $gray-light;
+          border-radius: 3px;
+          color: $primary-color;
+          background-color: $gray-lightest;
+
+          &:focus {
+            border-color: $link-color;
+            box-shadow: none;
+            outline: none;
+          }
+
+          &::placeholder {
+            color: $gray-dark;
+          }
+        }
+
+        .search-icon {
+          position: absolute;
+          right: 10px;
+          top: 50%;
+          transform: translateY(-50%);
+          width: 16px;
+          height: 16px;
+
+          &::before {
+            content: "\f002"; // FontAwesome search icon
+            font-family: "FontAwesome";
+            color: $gray-dark;
+          }
+        }
+      }
+    }
+  }
+
+  // Responsive Adjustments
+  @media (max-width: 767px) {
+    .navbar-container {
+      flex-wrap: wrap;
+    }
+
+    .navbar-collapse {
+      width: 100%;
+      background-color: #fff;
+      border-top: 1px solid $gray-light;
+      padding: 10px 0;
+
+      .navbar-nav {
+        flex-direction: column;
+        width: 100%;
+
+        > li {
+          margin: 5px 0;
+
+          > a {
+            padding: 10px 15px;
+          }
+        }
+      }
+
+      .navbar-right {
+        width: 100%;
+        margin-top: 10px;
+
+        .navbar-search {
+          width: 100%;
+          margin: 0 15px;
+
+          .search-container {
+            width: 100%;
+
+            .form-control {
+              width: 100%;
+            }
+          }
+        }
+      }
+    }
+  }
 }
-.navbar-container {
-  font-size: 16px;
+
+// Collapsible Sidebar
+.confluence-sidebar {
+  width: $sidebar-width;
+  position: fixed;
+  top: $navbar-height;
+  left: 0;
+  height: calc(100% - #{$navbar-height});
+  background-color: $gray-lightest;
+  border-right: 1px solid $gray-light;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  transition: width $transition-speed ease-in-out;
+  overflow-y: auto;
+  z-index: 100;
+
+  &.collapsed {
+    width: $sidebar-collapsed-width;
+
+    .sidebar-section-title {
+      a {
+        opacity: 0;
+        width: 0;
+      }
+
+      .toggle-icon {
+        margin-left: 0;
+      }
+    }
+
+    .sidebar-section-content {
+      display: none;
+    }
+  }
+
+  .sidebar-toggle {
+    position: absolute;
+    top: 10px;
+    right: -30px;
+    width: 25px;
+    height: 25px;
+    background-color: $gray-lighter;
+    border: 1px solid $gray-light;
+    border-radius: 3px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &::before {
+      content: "\f053"; // FontAwesome chevron-left
+      font-family: "FontAwesome";
+      color: $gray-dark;
+    }
+
+    .collapsed & {
+      &::before {
+        content: "\f054"; // Chevron-right
+      }
+    }
+  }
+
+  .sidebar-section {
+    margin-bottom: 8px;
+
+    .sidebar-section-title {
+      padding: 10px 15px;
+      background-color: $gray-lightest;
+      border-bottom: 1px solid $gray-light;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: all $transition-speed ease-in-out;
+
+      a {
+        color: $primary-color;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 16px;
+
+        &:hover {
+          color: $link-color;
+        }
+      }
+
+      .toggle-icon {
+        width: 12px;
+        height: 12px;
+        display: inline-block;
+        transition: transform $transition-speed ease-in-out;
+
+        &::before {
+          content: "\f078"; // FontAwesome chevron-down
+          font-family: "FontAwesome";
+          color: $gray-dark;
+        }
+
+        .collapsed & {
+          transform: rotate(-180deg);
+        }
+      }
+    }
+
+    .sidebar-section-content {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+
+      li {
+        padding: 8px 15px 8px 25px;
+        border-bottom: 1px solid $gray-light;
+
+        &:last-child {
+          border-bottom: none;
+        }
+
+        a {
+          color: $primary-color;
+          text-decoration: none;
+          font-size: 14px;
+
+          &:hover {
+            color: $link-color;
+          }
+        }
+
+        &.active {
+          background-color: $gray-lighter;
+          font-weight: 600;
+
+          a {
+            color: $link-color;
+          }
+        }
+
+        .sidebar-subsection {
+          list-style: none;
+          padding-left: 15px;
+          margin: 5px 0 0 0;
+
+          li {
+            padding: 6px 0;
+            border-bottom: none;
+
+            a {
+              color: $gray-medium;
+              font-size: 13px;
+
+              &:hover {
+                color: $link-color;
+              }
+            }
+
+            &.active {
+              background-color: transparent;
+              color: $accent-color;
+              font-weight: 400;
+
+              a {
+                color: $accent-color;
+                text-decoration: underline;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
 }
-.page-content {
-  padding-bottom: 20px;
+
+// Responsive Sidebar Adjustments
+@media (max-width: 767px) {
+  body {
+    padding-left: 0;
+  }
+
+  .confluence-sidebar {
+    width: $sidebar-width;
+    left: -$sidebar-width;
+    transition: left $transition-speed ease-in-out;
+
+    &.active {
+      left: 0;
+    }
+
+    &.collapsed {
+      width: $sidebar-collapsed-width;
+      left: 0;
+    }
+  }
 }
+
+// Footer
 .footer {
   position: absolute;
   bottom: 0;
@@ -146,388 +496,4 @@ figcaption {
   padding-top: 10px;
   background-color: $gray-lighter;
   color: $gray-dark;
-}
-
-.post-list-container {
-  li a.active {
-    font-weight: bold;
-  }
-}
-*[id]:before {
-  display: block;
-  content: " ";
-  margin-top: -75px;
-  height: 75px;
-  visibility: hidden;
-}
-.navbar-form .has-feedback .form-control-feedback{
-  top:10px
-}
-
-.landing-header-no-top-margin {
-  margin-top: 0;
-}
-
-.tile-link {
-  color:inherit;
-  text-decoration: none;
-}
-.landing-tiles {
-  h4 {
-    font-size: 22px;
-  }
-}
-
-.panel {
-  line-height: 1.4em;
-
-  .list-group  {
-
-    padding-bottom: 6px;
-
-    .arrow-wrapper {
-      display: inline-block;
-      width: 12px;
-      .active-icon {
-        display: none;
-        color: #008cba;
-      }
-    }
-
-    .list-group-item {
-      background-color: inherit;
-      color: #7d7d7d;
-      font-size: 14px;
-      border: none;
-      padding-top: 4px;
-      padding-bottom: 4px;
-      a, a:hover, a:focus { 
-        color: #7d7d7d;
-      }
-
-      &.active {
-        font-weight: 500;
-        color: #008cba;
-        a, a:hover, a:focus { 
-          color: #008cba;
-        }
-        .sublist-group {
-          display: block;
-        }
-      }
-
-      .sublist-group {
-        padding-left: 12px;
-        list-style-type: disc;
-        display: none;
-        &.active {
-          display: block;
-        }
-        .list-sub-group-item {
-          display: block;
-          padding-left: 0px;
-          padding-top: 2px;
-          padding-bottom: 2px;
-          font-size: 13px;
-          color: #7d7d7d;
-          font-weight: 300;
-
-          li {
-            display: block;
-          }
-
-          &.active {
-            color: #008cba;
-            text-decoration: underline;
-            font-weight: 400;
-          }
-        }
-      }
-
-    }
-  }
-}
-
-#sponsors {
-  margin-top: 45px;
-  margin-bottom: 25px;
-}
-
-#esri-logo {
-  max-width: 300px;
-}
-
-/* Container styling */
-.panel-group {
-  max-width: 800px; /* Confluence-like constrained width */
-  margin: 0 auto;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; /* Modern sans-serif */
-}
-
-/* Panel styling */
-.panel.panel-default {
-  border: 1px solid #dfe1e6; /* Subtle gray border */
-  border-radius: 3px;
-  margin-bottom: 8px;
-  background-color: #ffffff;
-  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05); /* Light shadow */
-}
-
-/* Panel heading */
-.panel-heading {
-  padding: 10px 15px;
-  background-color: #f4f5f7; /* Light gray like Confluence headers */
-  border-bottom: 1px solid #dfe1e6;
-  cursor: pointer; /* Indicates clickability */
-}
-
-.panel-title {
-  margin: 0;
-  font-size: 16px;
-  font-weight: 600; /* Slightly bold */
-  color: #172b4d; /* Dark blue-gray */
-}
-
-.panel-title a {
-  text-decoration: none;
-  color: #172b4d;
-  display: block;
-}
-
-.panel-title a:hover {
-  color: #0052cc; /* Confluence blue on hover */
-}
-
-/* Collapsible content */
-.panel-collapse {
-  padding: 0;
-}
-
-/* List group (main items) */
-.list-group {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.list-group-item {
-  padding: 10px 15px;
-  border-bottom: 1px solid #dfe1e6;
-}
-
-.list-group-item:last-child {
-  border-bottom: none;
-}
-
-.list-group-item a {
-  text-decoration: none;
-  color: #0052cc; /* Confluence blue for links */
-  font-size: 14px;
-}
-
-.list-group-item a:hover {
-  text-decoration: underline;
-}
-
-.list-group-item.active {
-  background-color: #ebecf0; /* Light gray for active */
-  font-weight: 600;
-}
-
-/* Remove extra div padding inside list-group-item */
-.list-group-item > a > div {
-  margin: 0;
-}
-
-/* Submenu styling */
-.sublist-group {
-  list-style: none;
-  padding-left: 25px; /* Indentation for hierarchy */
-  margin: 5px 0 0 0; /* Slight top margin */
-}
-
-.sublist-group a {
-  text-decoration: none;
-  color: #006644; /* Distinct color for subitems */
-  font-size: 13px;
-  display: block; /* Ensures full clickable area */
-}
-
-.sublist-group a:hover {
-  text-decoration: underline;
-  color: #0052cc; /* Hover matches main link color */
-}
-
-.sublist-group .list-sub-group-item {
-  padding: 6px 0; /* Vertical spacing */
-}
-
-.sublist-group .list-sub-group-item.active {
-  background-color: #f4f5f7; /* Light background for active subitem */
-  font-weight: 600;
-}
-
-/* Fix nested li styling */
-.sublist-group li {
-  margin: 0;
-  padding: 0;
-}
-
-.sublist-group span {
-  display: inline; /* Keeps text inline */
-}
-
-/* Collapse transition (Bootstrap-compatible) */
-.collapse {
-  display: none;
-}
-
-.collapse.in {
-  display: block;
-}
-
-/* Navbar container */
-.navbar.navbar-default.navbar-fixed-top {
-  background-color: #ffffff; /* White background like Confluence */
-  border-bottom: 1px solid #dfe1e6; /* Subtle gray border */
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05); /* Light shadow */
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; /* Modern sans-serif */
-}
-
-/* Container inside navbar */
-.navbar-container {
-  max-width: 1200px; /* Confluence-like constrained width */
-  padding: 0 15px;
-}
-
-/* Navbar header */
-.navbar-header {
-  display: flex;
-  align-items: center;
-}
-
-/* Toggle button for mobile */
-.navbar-toggle {
-  border: 1px solid #dfe1e6; /* Subtle border */
-  background-color: #f4f5f7; /* Light gray */
-  margin: 8px 15px;
-}
-
-.navbar-toggle .icon-bar {
-  background-color: #172b4d; /* Dark blue-gray for bars */
-}
-
-.navbar-toggle:hover,
-.navbar-toggle:focus {
-  background-color: #ebecf0; /* Lighter gray on hover */
-}
-
-/* Brand styling */
-.navbar-brand {
-  color: #172b4d; /* Dark blue-gray */
-  font-size: 18px;
-  font-weight: 600;
-  padding: 15px;
-  text-decoration: none;
-}
-
-.navbar-brand:hover,
-.navbar-brand:focus {
-  color: #0052cc; /* Confluence blue on hover */
-}
-
-/* Navbar collapse content */
-.navbar-collapse {
-  padding: 0;
-}
-
-/* Navigation links */
-.nav.navbar-nav {
-  margin: 0;
-}
-
-.nav.navbar-nav > li > a {
-  color: #172b4d; /* Dark blue-gray */
-  font-size: 14px;
-  padding: 15px 20px;
-  text-decoration: none;
-}
-
-.nav.navbar-nav > li > a:hover,
-.nav.navbar-nav > li > a:focus {
-  color: #0052cc; /* Confluence blue on hover */
-  background-color: #f4f5f7; /* Light gray background */
-}
-
-.nav.navbar-nav > li.active > a {
-  color: #0052cc; /* Blue for active */
-  background-color: #ebecf0; /* Slightly darker gray */
-  font-weight: 600;
-}
-
-/* Navbar right section */
-.navbar-right {
-  margin-right: 15px;
-}
-
-/* Search form */
-.navbar-form {
-  margin: 8px 0;
-  padding: 0;
-}
-
-.form-group.has-feedback {
-  position: relative;
-}
-
-.form-control {
-  border: 1px solid #dfe1e6; /* Subtle border */
-  border-radius: 3px;
-  box-shadow: none; /* Remove Bootstrap shadow */
-  font-size: 13px;
-  padding: 6px 25px 6px 10px; /* Space for icon */
-  background-color: #fafbfc; /* Very light gray */
-  color: #172b4d;
-}
-
-.form-control:focus {
-  border-color: #0052cc; /* Blue outline on focus */
-  background-color: #ffffff;
-  outline: none;
-}
-
-.form-control::placeholder {
-  color: #6b778c; /* Light gray placeholder */
-}
-
-/* Search icon */
-.form-control-feedback {
-  color: #6b778c; /* Gray icon */
-  font-size: 14px;
-  position: absolute;
-  right: 10px;
-  top: 50%;
-  transform: translateY(-50%);
-  pointer-events: none; /* Prevents icon from blocking input */
-}
-
-/* Responsive adjustments */
-@media (max-width: 767px) {
-  .navbar-nav {
-    margin: 0;
-  }
-  .navbar-right {
-    margin: 0;
-    padding: 10px 15px;
-  }
-  .navbar-form {
-    margin: 0;
-    width: 100%;
-  }
-  .form-group.has-feedback {
-    width: 100%;
-  }
-  .form-control {
-    width: 100%;
-  }
 }
