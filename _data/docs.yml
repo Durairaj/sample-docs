@@ -30,16 +30,3 @@
       path: experience-application/subdocs/doc1
     - title: Experience layer 2
       path: experience-application/subdocs/doc2
-
-
-
-- title: Additional menu added
-  path: experience-application
-  docs:
-  - title: Experience layer
-    path: experience-application/subdocs/doc1
-    subdocs:
-    - title: Experience layer 1
-      path: experience-application/subdocs/doc1
-    - title: Experience layer 2
-      path: experience-application/subdocs/doc2

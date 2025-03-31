@@ -1,49 +1,66 @@
+var baseurl = "{{ site.baseurl }}";
+if (!baseurl) baseurl = "";
+var pages = new Bloodhound({
+  datumTokenizer: Bloodhound.tokenizers.obj.whitespace('title'),
+  queryTokenizer: Bloodhound.tokenizers.whitespace,
+  prefetch: {
+    url: baseurl + '/search.json',
+    filter: function(data) { console.log('Bloodhound prefetch data:', data); return data; }
+  }
+});
+pages.initialize().done(function() { console.log('Bloodhound initialized'); }).fail(function() { console.error('Bloodhound failed'); });
+
 $(function() {
+  $('a[href^="/"]').on('click', function(e) {
+    var url = baseurl + $(this).attr('href');
+    loadPage(url);
+  });
 
-    $('.sidebar-section-title').click(function() {
-        console.log('Title clicked:', $(this).text());
-        $(this).toggleClass('collapsed');
-        $(this).next('.sidebar-section-content').slideToggle(200);
-    });
+  $(window).on('popstate', function(e) {
+    var url = window.location.pathname;
+    loadPage(url);
+  });
 
-    // Expand active section
-    $('.sidebar-section-content').each(function() {
-        if ($(this).find('li.active').length > 0) {
-            console.log('Expanding section with active item');
-            $(this).slideDown(0);
-            $(this).prev('.sidebar-section-title').removeClass('collapsed');
-        }
-    });
-    
-    // $('.collapse').collapse('hide');
-    $('.list-group-item.active').parent().parent('.collapse').collapse('show');
-
-
-    var pages = new Bloodhound({
-        datumTokenizer: Bloodhound.tokenizers.obj.whitespace('title'),
-        // datumTokenizer: Bloodhound.tokenizers.whitespace,
-        queryTokenizer: Bloodhound.tokenizers.whitespace,
-
-        prefetch: baseurl + '/search.json'
-    });
-
+  if (!$('#search-box').hasClass('typeahead-initialized')) {
     $('#search-box').typeahead({
-        minLength: 0,
-        highlight: true
+      minLength: 0,
+      highlight: true
     }, {
-        name: 'pages',
-        display: 'title',
-        source: pages
+      name: 'pages',
+      display: 'title',
+      source: pages
+    }).addClass('typeahead-initialized');
+  }
+
+  $('#search-box').on('typeahead:select', function(ev, suggestion) {
+    $('.search-icon').attr('data-url', suggestion.url);
+    loadPage(suggestion.url);
+  });
+
+  $('.search-icon').click(function() {
+    var url = $(this).attr('data-url');
+    if (url) loadPage(url);
+  });
+
+  $('.sidebar-section-title').click(function() {
+    $(this).toggleClass('collapsed');
+    $(this).next('.sidebar-section-content').slideToggle(200);
+  });
+
+  $('.sidebar-section-content').each(function() {
+    if ($(this).find('li.active').length > 0) {
+      $(this).slideDown(0);
+      $(this).prev('.sidebar-section-title').removeClass('collapsed');
+    }
+  });
+
+  function loadPage(url) {
+    $.get(url, function(data) {
+      var newContent = $(data).find('.page-content .container .row .main-content').html() || $(data).find('body').html();
+      $('.main-content').html(newContent);
+      window.history.pushState({ path: url }, '', url);
+    }).fail(function(jqXHR, textStatus) {
+      console.error('Load failed:', textStatus);
     });
-
-    $('#search-box').bind('typeahead:select', function(ev, suggestion) {
-        window.location.href = suggestion.url;
-    });
-
-
-    // Markdown plain out to bootstrap style
-    $('#markdown-content-container table').addClass('table');
-    $('#markdown-content-container img').addClass('img-responsive');
-
-
+  }
 });

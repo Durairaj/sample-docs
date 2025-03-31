@@ -48,7 +48,7 @@ body {
   }
 }
 
-// Headings mixin for reusable anchor styles
+// Headings mixin
 @mixin heading-anchor {
   .anchor {
     float: left;
@@ -62,8 +62,9 @@ body {
   }
 }
 
-h1 {
+h1.page-title {
   margin-top: 0;
+  text-align: left !important; // High specificity to enforce left alignment
   &:hover {
     @include heading-anchor;
   }
@@ -92,6 +93,7 @@ h2, .h3 {
 p {
   margin: 0 0 20px;
   font-size: 16px;
+  text-align: left; // Ensure paragraph text is left-aligned
 }
 
 code {
@@ -102,7 +104,7 @@ code {
   border-radius: 0;
 }
 
-// Top Navigation (Confluence Style, Simplified)
+// Top Navigation (Confluence Style)
 .confluence-topnav {
   background-color: #fff;
   border-bottom: 1px solid $gray-light;
@@ -125,7 +127,6 @@ code {
     padding: 0 15px;
   }
 
-  // Left Section
   .navbar-left {
     display: flex;
     align-items: center;
@@ -172,45 +173,24 @@ code {
     }
   }
 
-  // Navigation Links (Only Documentation)
-  .navbar-nav {
+  .navbar-collapse {
+    flex-grow: 1;
     display: flex;
-    align-items: center;
-    margin: 0;
-
-    > li {
-      > a {
-        color: $gray-dark;
-        font-size: 14px;
-        padding: 10px 15px;
-        text-decoration: none;
-        transition: color $transition-speed ease-in-out;
-
-        &:hover {
-          color: $link-color;
-          background-color: $gray-lighter;
-          border-radius: 3px;
-        }
-      }
-
-      &.active > a {
-        color: $link-color;
-        font-weight: 600;
-        background-color: transparent;
-      }
-    }
+    justify-content: flex-end;
   }
 
-  // Right Section (Search Only)
   .navbar-right {
     display: flex;
     align-items: center;
+    margin-left: auto;
 
     .navbar-search {
       margin-right: 0;
 
       .search-container {
         position: relative;
+        display: flex;
+        align-items: center;
 
         .form-control {
           width: 200px;
@@ -220,6 +200,7 @@ code {
           border-radius: 3px;
           color: $primary-color;
           background-color: $gray-lightest;
+          height: 32px;
 
           &:focus {
             border-color: $link-color;
@@ -235,22 +216,26 @@ code {
         .search-icon {
           position: absolute;
           right: 10px;
-          top: 50%;
-          transform: translateY(-50%);
+          top: 0;
+          bottom: 0;
           width: 16px;
           height: 16px;
+          margin: auto 0;
+          display: flex;
+          align-items: center;
 
           &::before {
-            content: "\f002"; // FontAwesome search icon
+            content: "\f002";
             font-family: "FontAwesome";
             color: $gray-dark;
+            font-size: 14px;
+            line-height: 1;
           }
         }
       }
     }
   }
 
-  // Responsive Adjustments
   @media (max-width: 767px) {
     .navbar-container {
       flex-wrap: wrap;
@@ -261,23 +246,12 @@ code {
       background-color: #fff;
       border-top: 1px solid $gray-light;
       padding: 10px 0;
-
-      .navbar-nav {
-        flex-direction: column;
-        width: 100%;
-
-        > li {
-          margin: 5px 0;
-
-          > a {
-            padding: 10px 15px;
-          }
-        }
-      }
+      justify-content: flex-start;
 
       .navbar-right {
         width: 100%;
         margin-top: 10px;
+        margin-left: 0;
 
         .navbar-search {
           width: 100%;
@@ -296,7 +270,7 @@ code {
   }
 }
 
-// Collapsible Sidebar
+// Sidebar
 .confluence-sidebar {
   width: $sidebar-width;
   position: fixed;
@@ -344,14 +318,14 @@ code {
     justify-content: center;
 
     &::before {
-      content: "\f053"; // FontAwesome chevron-left
+      content: "\f053";
       font-family: "FontAwesome";
       color: $gray-dark;
     }
 
     .collapsed & {
       &::before {
-        content: "\f054"; // Chevron-right
+        content: "\f054";
       }
     }
   }
@@ -387,13 +361,30 @@ code {
         transition: transform $transition-speed ease-in-out;
 
         &::before {
-          content: "\f078"; // FontAwesome chevron-down
+          content: "\f078";
           font-family: "FontAwesome";
           color: $gray-dark;
+          font-size: 12px;
+          line-height: 1;
         }
 
         .collapsed & {
-          transform: rotate(-180deg);
+          transform: rotate(0deg);
+          &::before {
+            content: "\f054";
+          }
+        }
+
+        &:not(.collapsed) {
+          transform: rotate(0deg);
+        }
+      }
+
+      &.collapsed {
+        .toggle-icon {
+          &::before {
+            content: "\f054";
+          }
         }
       }
     }
@@ -496,4 +487,69 @@ code {
   padding-top: 10px;
   background-color: $gray-lighter;
   color: $gray-dark;
+}
+
+// Layout Styles
+.page-content {
+  padding: 20px 0;
+}
+
+.main-content {
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100vh - #{$navbar-height} - 46px);
+  text-align: left !important; // High specificity for content
+}
+
+#markdown-content-container {
+  flex-grow: 1;
+  margin-bottom: 20px;
+  text-align: left !important; // Ensure markdown content is left-aligned
+}
+
+hr {
+  border-color: $gray-light;
+  margin: 20px 0;
+}
+
+.improve-page {
+  .btn-default {
+    background-color: $gray-lightest;
+    border-color: $gray-light;
+    color: $primary-color;
+    padding: 8px 16px;
+    font-size: 14px;
+    transition: background-color $transition-speed ease-in-out, color $transition-speed ease-in-out;
+
+    &:hover {
+      background-color: $gray-lighter;
+      color: $link-color;
+    }
+
+    .fa-pencil {
+      margin-right: 8px;
+      vertical-align: middle;
+    }
+  }
+}
+
+@media (max-width: 767px) {
+  .col-md-3, .main-content {
+    margin-bottom: 20px;
+  }
+
+  .main-content {
+    min-height: auto;
+  }
+
+  .improve-page .btn-default {
+    width: 100%;
+    box-sizing: border-box;
+  }
+}
+
+// Sidebar Wrapper
+.confluence-sidebar-wrapper {
+  position: relative;
+  height: 100%;
 }
