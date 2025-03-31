@@ -1,7 +1,7 @@
 ---
-title: Intro
+title: Data Introduction
 permalink: /docs/data/intro
 redirect_from: /docs/data/index.html
 ---
 
-Data intro
+Introduction about data goes here
