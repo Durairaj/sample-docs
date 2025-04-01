@@ -174,9 +174,9 @@ For nested subdocuments, add a subdocs field in _data/docs.yml and create the fi
     subdocs:
     - title: Access Control
       path: security/subdocs/access-control
-Create docs/security/subdocs/access-control.md:
 
 ```
+Create _docs/security/subdocs/access-control.md:
 
 
 ```
