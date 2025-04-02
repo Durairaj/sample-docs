@@ -4,18 +4,18 @@
 @charset "utf-8";
 
 // Variables for reusability
-$primary-color: #172b4d;        // Dark blue-gray (Confluence text)
-$link-color: #0052cc;           // Confluence blue for links
-$accent-color: #008cba;         // Secondary accent
-$gray-lightest: #f4f5f7;        // Light gray background
-$gray-lighter: #ebecf0;         // Slightly darker gray
-$gray-light: #dfe1e6;           // Borders
-$gray-medium: #7d7d7d;          // Inactive text
-$gray-dark: #6b778c;            // Placeholders, icons
-$sidebar-width: 250px;          // Sidebar width
-$sidebar-collapsed-width: 20px; // Collapsed width
-$navbar-height: 56px;           // Confluence top nav height
-$transition-speed: 0.3s;        // Animation speed
+$primary-color: #172b4d;
+$link-color: #0052cc;
+$accent-color: #008cba;
+$gray-lightest: #f4f5f7;
+$gray-lighter: #ebecf0;
+$gray-light: #dfe1e6;
+$gray-medium: #7d7d7d;
+$gray-dark: #6b778c;
+$sidebar-width: 250px;
+$sidebar-collapsed-width: 20px;
+$navbar-height: 56px;
+$transition-speed: 0.3s;
 
 // Imports
 @import
@@ -64,7 +64,7 @@ body {
 
 h1.page-title {
   margin-top: 0;
-  text-align: left !important; // High specificity to enforce left alignment
+  text-align: left !important;
   &:hover {
     @include heading-anchor;
   }
@@ -93,7 +93,7 @@ h2, .h3 {
 p {
   margin: 0 0 20px;
   font-size: 16px;
-  text-align: left; // Ensure paragraph text is left-aligned
+  text-align: left;
 }
 
 code {
@@ -158,6 +158,7 @@ code {
       margin: 0 10px 0 0;
       border: none;
       background-color: transparent;
+      padding: 9px 10px; // Match Bootstrap 3 default
 
       .icon-bar {
         background-color: $gray-dark;
@@ -174,9 +175,18 @@ code {
   }
 
   .navbar-collapse {
+    display: block; // Bootstrap 3 default for desktop
+    float: none; // Reset Bootstrap float
     flex-grow: 1;
-    display: flex;
-    justify-content: flex-end;
+
+    &.collapse {
+      height: auto !important; // Ensure Bootstrap toggle works
+      overflow: visible !important;
+    }
+
+    &.in {
+      display: block; // Explicitly show when toggled
+    }
   }
 
   .navbar-right {
@@ -201,6 +211,7 @@ code {
           color: $primary-color;
           background-color: $gray-lightest;
           height: 32px;
+          box-sizing: border-box;
 
           &:focus {
             border-color: $link-color;
@@ -214,19 +225,17 @@ code {
         }
 
         .search-icon {
-          position: absolute;
-          right: 10px;
-          top: 0;
-          bottom: 0;
-          width: 16px;
-          height: 16px;
-          margin: auto 0;
-          display: flex;
-          align-items: center;
+          right: -10px; // Adjusted for FontAwesome 6
+          top: 50%;
+          transform: translateY(-50%);
+          width: 14px;
+          height: 14px;
+          display: block;
 
           &::before {
-            content: "\f002";
-            font-family: "FontAwesome";
+            content: "\f002"; // Magnifying glass in FontAwesome 6
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900; // Solid style
             color: $gray-dark;
             font-size: 14px;
             line-height: 1;
@@ -246,22 +255,34 @@ code {
       background-color: #fff;
       border-top: 1px solid $gray-light;
       padding: 10px 0;
-      justify-content: flex-start;
+
+      &.collapse {
+        display: none; // Hidden by default on mobile
+      }
+
+      &.in {
+        display: block; // Shown when toggled
+      }
 
       .navbar-right {
         width: 100%;
         margin-top: 10px;
         margin-left: 0;
+        padding: 0 15px;
 
         .navbar-search {
           width: 100%;
-          margin: 0 15px;
 
           .search-container {
             width: 100%;
 
             .form-control {
               width: 100%;
+              padding-right: 30px;
+            }
+
+            .search-icon {
+              right: 10px;
             }
           }
         }
@@ -280,7 +301,7 @@ code {
   background-color: $gray-lightest;
   border-right: 1px solid $gray-light;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  transition: width $transition-speed ease-in-out;
+  transition: width $transition-speed ease-in-out, left $transition-speed ease-in-out;
   overflow-y: auto;
   z-index: 100;
 
@@ -318,14 +339,15 @@ code {
     justify-content: center;
 
     &::before {
-      content: "\f053";
-      font-family: "FontAwesome";
+      content: "\f053"; // Chevron left in FA 6
+      font-family: "Font Awesome 6 Free";
+      font-weight: 900;
       color: $gray-dark;
     }
 
     .collapsed & {
       &::before {
-        content: "\f054";
+        content: "\f054"; // Chevron right in FA 6
       }
     }
   }
@@ -361,8 +383,9 @@ code {
         transition: transform $transition-speed ease-in-out;
 
         &::before {
-          content: "\f078";
-          font-family: "FontAwesome";
+          content: "\f078"; // Chevron down in FA 6
+          font-family: "Font Awesome 6 Free";
+          font-weight: 900;
           color: $gray-dark;
           font-size: 12px;
           line-height: 1;
@@ -371,7 +394,7 @@ code {
         .collapsed & {
           transform: rotate(0deg);
           &::before {
-            content: "\f054";
+            content: "\f054"; // Chevron right in FA 6
           }
         }
 
@@ -460,6 +483,9 @@ code {
 @media (max-width: 767px) {
   body {
     padding-left: 0;
+    &.sidebar-active {
+      padding-left: $sidebar-width;
+    }
   }
 
   .confluence-sidebar {
@@ -472,8 +498,8 @@ code {
     }
 
     &.collapsed {
-      width: $sidebar-collapsed-width;
-      left: 0;
+      width: 0;
+      left: -$sidebar-width;
     }
   }
 }
@@ -498,13 +524,13 @@ code {
   display: flex;
   flex-direction: column;
   min-height: calc(100vh - #{$navbar-height} - 46px);
-  text-align: left !important; // High specificity for content
+  text-align: left !important;
 }
 
 #markdown-content-container {
   flex-grow: 1;
   margin-bottom: 20px;
-  text-align: left !important; // Ensure markdown content is left-aligned
+  text-align: left !important;
 }
 
 hr {

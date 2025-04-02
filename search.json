@@ -1,5 +1,3 @@
----
----
 [
   {% for section in site.data.docs %}
   {% assign section_url = section.path | prepend:"/docs/" %}
